@@ -12,7 +12,7 @@ A neural network trained to classify handwritten digits (MNIST). Takes a 28×28 
 
 A regression model that predicts house prices using the [Melbourne Housing dataset](https://www.kaggle.com/datasets/anthonypino/melbourne-housing-market) from Kaggle. Covers data cleaning, feature handling, and training a model on real-world tabular data.
 
-### 🌀 Spiral Classification — From Scratch (`deeplearning for computer vision/`)
+### 🌀 Spiral Classification — From Scratch (`ai/cv-spiral-data-classifier/`)
 
 A neural network built **entirely from scratch using NumPy** — no TensorFlow, no Keras, no PyTorch. Generates a configurable number of points along interleaved spiral arms and trains a network to learn the non-linear decision boundary separating them. This one's about understanding forward passes, activations, and backpropagation at the math level, not just calling `.fit()`.
 
