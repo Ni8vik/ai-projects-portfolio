@@ -30,9 +30,11 @@ class ClusterCanvas(tk.Tk):
 
         self.mode = tk.StringVar(value="spiral")
         self.point_count = tk.IntVar(value=420)
+        self.seed = tk.IntVar(value=42)
         self.turns = tk.DoubleVar(value=2.4)
         self.noise = tk.DoubleVar(value=0.12)
         self.label_count = tk.IntVar(value=3)
+        self.ring_spacing = tk.DoubleVar(value=0.12)
         self.brush_size = tk.IntVar(value=14)
         self.noise_width = tk.IntVar(value=0)
         self.data = []
@@ -65,15 +67,21 @@ class ClusterCanvas(tk.Tk):
 
         mode_frame = tk.Frame(panel, bg=CARD)
         mode_frame.grid(row=2, column=0, sticky="ew", padx=18)
-        for name, value in (("Spiral", "spiral"), ("Gaussian blobs", "blobs"), ("Paint", "paint")):
+        for name, value in (("Spiral", "spiral"), ("Gaussian blobs", "blobs"), ("Rings", "rings"), ("Two moons", "moons"), ("Paint", "paint")):
             tk.Radiobutton(mode_frame, text=name, variable=self.mode, value=value, command=lambda v=value: self._set_mode(v), indicatoron=False, anchor="w", padx=10, pady=8, bg=CARD, fg=MUTED, selectcolor=INK, activebackground="#f0eee7", activeforeground=INK, font=("Segoe UI", 10)).pack(fill="x", pady=2)
 
         self.generated_frame = tk.Frame(panel, bg=CARD)
         self.generated_frame.grid(row=3, column=0, sticky="ew", padx=24, pady=(20, 0))
         self._slider(self.generated_frame, "Points", self.point_count, 40, 1000, 10, "points_value")
+        seed_frame = tk.Frame(self.generated_frame, bg=CARD)
+        seed_frame.pack(fill="x", pady=(0, 13))
+        tk.Label(seed_frame, text="Seed", bg=CARD, fg="#55605a", font=("Segoe UI", 9)).pack(side="left")
+        tk.Spinbox(seed_frame, textvariable=self.seed, from_=0, to=999999, width=8, relief="flat", bg="#eef4e8", fg=INK, buttonbackground="#d8e8d0", font=("Consolas", 9, "bold")).pack(side="right")
         self._slider(self.generated_frame, "Turns", self.turns, 1, 4, .1, "turns_value")
         self._slider(self.generated_frame, "Noise", self.noise, 0, .35, .01, "noise_value")
-        self._slider(self.generated_frame, "Labels", self.label_count, 2, 6, 1, "labels_value")
+        self.label_control = self._slider(self.generated_frame, "Labels", self.label_count, 2, 6, 1, "labels_value")
+        self.rings_frame = tk.Frame(self.generated_frame, bg=CARD)
+        self._slider(self.rings_frame, "Ring spacing", self.ring_spacing, .05, .22, .01, "ring_spacing_value")
 
         self.gaussian_help = tk.Label(panel, text="◉  Drag colored handles on the canvas\n    to move cluster centers.", justify="left", bg="#eef4fb", fg="#657ca6", font=("Segoe UI", 9), padx=10, pady=9)
         self.gaussian_reset = tk.Button(panel, text="↺  Reset center positions", command=self.reset_centers, bg=CARD, fg=MUTED, relief="flat", anchor="w", font=("Segoe UI", 9))
@@ -150,6 +158,7 @@ class ClusterCanvas(tk.Tk):
             width=13,
             command=lambda _: update(),
         ).pack(fill="x", pady=(4, 0))
+        return frame
 
     @staticmethod
     def _normal():
@@ -186,10 +195,32 @@ class ClusterCanvas(tk.Tk):
             points.append({"x": center["x"] + self._normal() * self.noise.get() * .58, "y": center["y"] + self._normal() * self.noise.get() * .58, "label": label})
         return points
 
+    def make_rings(self):
+        points = []
+        ring_count = self.label_count.get()
+        for index in range(self.point_count.get()):
+            label = index % ring_count
+            angle = random.random() * math.tau
+            radius = .08 + label * self.ring_spacing.get()
+            radius += self._normal() * self.noise.get() * .2
+            points.append({"x": .5 + math.cos(angle) * radius, "y": .5 + math.sin(angle) * radius, "label": label})
+        return points
+
+    def make_moons(self):
+        points = []
+        for index in range(self.point_count.get()):
+            label = index % 2
+            angle = random.random() * math.pi
+            x = .32 + math.cos(angle) * .22 if label == 0 else .68 - math.cos(angle) * .22
+            y = .48 + math.sin(angle) * .2 if label == 0 else .52 - math.sin(angle) * .2
+            points.append({"x": x + self._normal() * self.noise.get() * .45, "y": y + self._normal() * self.noise.get() * .45, "label": label})
+        return points
+
     def generate(self):
         if self.mode.get() == "paint":
             return
-        self.data = self.make_spiral() if self.mode.get() == "spiral" else self.make_blobs()
+        random.seed(self.seed.get())
+        self.data = self.make_spiral() if self.mode.get() == "spiral" else self.make_blobs() if self.mode.get() == "blobs" else self.make_rings() if self.mode.get() == "rings" else self.make_moons()
         self.strokes = []
         self.draw()
         self.update_stats()
@@ -197,6 +228,8 @@ class ClusterCanvas(tk.Tk):
     def _set_mode(self, mode):
         self.mode.set(mode)
         self.generated_frame.grid() if mode != "paint" else self.generated_frame.grid_remove()
+        self.label_control.grid_remove() if mode == "moons" else self.label_control.grid()
+        self.rings_frame.grid() if mode == "rings" else self.rings_frame.grid_remove()
         self.paint_frame.grid(row=3, column=0, sticky="ew", padx=24, pady=(20, 0)) if mode == "paint" else self.paint_frame.grid_remove()
         if mode == "blobs":
             self.gaussian_help.grid(row=4, column=0, sticky="ew", padx=24, pady=(12, 0))
@@ -204,7 +237,7 @@ class ClusterCanvas(tk.Tk):
         else:
             self.gaussian_help.grid_remove()
             self.gaussian_reset.grid_remove()
-        self.canvas_title.config(text="Freeform field" if mode == "paint" else "Gaussian field" if mode == "blobs" else "Spiral field")
+        self.canvas_title.config(text="Freeform field" if mode == "paint" else "Gaussian field" if mode == "blobs" else "Concentric field" if mode == "rings" else "Two moons field" if mode == "moons" else "Spiral field")
         if mode == "paint":
             self.data, self.strokes = [], []
             self.draw()
