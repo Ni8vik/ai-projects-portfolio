@@ -24,6 +24,10 @@ A language model trained on text that generates the next word(s) given a prompt,
 
 A working chatbot app built on top of the [GapGPT](https://gapgpt.app/) API (an Iranian-accessible proxy for ChatGPT-style completions). Handles API key-based auth and message exchange in a simple chat interface.
 
+### clustering data creator ('clustering_data_maker/')
+
+a csv/json data maker using multiple methods including making gaussian blobs, spiral, two moons, rings, and a built in paint method that can create 1 to 60 points every move , it has a more refined and better design version that was build with html/css/js .
+
 ## Why this repo exists
 
 I started with Python and data analysis through **Technosharif** (a Sharif University-affiliated program), and I've been working through numpy, pandas, and scikit-learn before moving deeper into neural networks and deep learning. This repo is where that progression lives — from a from-scratch NumPy classifier to using real frameworks and real-world datasets to building an app powered by an LLM API.
