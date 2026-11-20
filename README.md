@@ -24,11 +24,11 @@ A language model trained on text that generates the next word(s) given a prompt,
 
 A working chatbot app built on top of the [GapGPT](https://gapgpt.app/) API (an Iranian-accessible proxy for ChatGPT-style completions). Handles API key-based auth and message exchange in a simple chat interface.
 
-### clustering data creator ('clustering_data_maker/')
+### ✒️ clustering data creator ('clustering_data_maker/')
 
 a csv/json data maker using multiple methods including making gaussian blobs, spiral, two moons, rings, and a built in paint method that can create 1 to 60 points every move , it has a more refined and better design version that was build with html/css/js .
 
-### handmade_decisiontree_algorithm
+### 🌲 handmade_decisiontree_algorithm
 
 A small, readable decision tree built from scratch with just NumPy and pandas — no scikit-learn. Supports Gini/entropy and numeric/categorical splits, so you can see exactly how a tree learns to split.
 
