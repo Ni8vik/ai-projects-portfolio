@@ -28,6 +28,10 @@ A working chatbot app built on top of the [GapGPT](https://gapgpt.app/) API (an 
 
 a csv/json data maker using multiple methods including making gaussian blobs, spiral, two moons, rings, and a built in paint method that can create 1 to 60 points every move , it has a more refined and better design version that was build with html/css/js .
 
+### handmade_decisiontree_algorithm
+
+A small, readable decision tree built from scratch with just NumPy and pandas — no scikit-learn. Supports Gini/entropy and numeric/categorical splits, so you can see exactly how a tree learns to split.
+
 ## Why this repo exists
 
 I started with Python and data analysis through **Technosharif** (a Sharif University-affiliated program), and I've been working through numpy, pandas, and scikit-learn before moving deeper into neural networks and deep learning. This repo is where that progression lives — from a from-scratch NumPy classifier to using real frameworks and real-world datasets to building an app powered by an LLM API.

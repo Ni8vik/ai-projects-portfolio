@@ -1,10 +1,158 @@
+# ===== Python =====
 __pycache__/
-*.pyc
-.ipynb_checkpoints/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+develop-eggs/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ===== Virtual environments =====
+.venv/
 venv/
 env/
+ENV/
 .env
-*.egg-info/
-.DS_Store
+.env.*
+!.env.example
+.conda/
+conda-meta/
+
+# ===== Jupyter / IPython =====
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+.virtual_documents/
+profile_default/
+ipython_config.py
+*.nbconvert.ipynb
+*-checkpoint.ipynb
+# Uncomment to ignore ALL notebooks (usually you want to commit them):
+# *.ipynb
+# Uncomment to ignore notebook exports:
+# *.nbconvert.*
+# notebooks/*.html
+
+# ===== Data (keep large/raw data out of git) =====
+data/
+datasets/
 *.csv
-*.CSV
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.db
+*.sqlite
+*.sqlite3
+*.zip
+*.tar
+*.tar.gz
+*.gz
+*.7z
+# Keep placeholder files so empty folders stay in the repo
+!data/.gitkeep
+!data/README.md
+
+# ===== Models / checkpoints / weights =====
+models/
+checkpoints/
+saved_models/
+weights/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.pb
+*.tflite
+*.joblib
+*.bin
+*.keras
+*.h5
+
+# ===== Experiment tracking & logs =====
+wandb/
+mlruns/
+mlartifacts/
+runs/
+lightning_logs/
+tensorboard/
+tb_logs/
+logs/
+*.log
+outputs/
+multirun/
+.hydra/
+.neptune/
+.comet/
+catboost_info/
+optuna*.db
+
+# ===== DVC =====
+/data/*.dvc.bak
+.dvc/cache
+.dvc/tmp
+.dvc/config.local
+
+# ===== Caches / test / tooling =====
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.pyre/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+# ===== Hugging Face / PyTorch / Keras caches =====
+.huggingface/
+hf_cache/
+.torch/
+.keras/
+
+# ===== IDEs / editors =====
+.vscode/
+!.vscode/settings.json.example
+.idea/
+*.swp
+*.swo
+*~
+.spyderproject
+.spyproject
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ===== Secrets =====
+*.pem
+*.key
+secrets.*
+credentials.json
